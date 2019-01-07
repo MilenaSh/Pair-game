@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="game-wrapper"></div>
+
+    <script type="text/javascript" src="./index.js"></script>
+    <script type="text/javascript">
+        (function() {
+            game.load();
+        })();
+    </script>
+</body>
+
+</html>
+
+<!--
+    1. Create game field (4x4 boxes)
+        - create 8 objects and hide them twice under boxes
+    2. Game logic:
+        - on click reveal the object behind box
+            - if 2 boxes are open:
+                - if boxes match: mark them as completed
+                - if boxes don't match: wait 2 seconds and hide the boxes
+                    - restrict user input
+        - on all boxes matched: win message and option for new game
+        - user should be able to restart the game at any point
+    3. Restrictions: 
+        - index.html can't be edited
+-->
