@@ -7,7 +7,6 @@ var game = (function () {
     function load() {
         loadJQuery();
         setTimeout(function () {
-            console.log('game loaded');
             buildMatrix(4, 4);
 
             let newShuffledArraya = shuffle(entryArray);
@@ -140,6 +139,9 @@ var game = (function () {
         console.log(openCells);
 
         if (openCells.length > 1) {
+            setTimeout(function () {
+                preventInput();
+            }, 2000);
             let $firstCell = $(openCells[0]);
             let $secondCell = $(openCells[1]);
 
