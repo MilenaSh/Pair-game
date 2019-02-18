@@ -7,14 +7,8 @@ var game = (function () {
     function load() {
         loadJQuery();
         setTimeout(function () {
-            buildMatrix(4, 4);
-
-            let newShuffledArraya = shuffle(entryArray);
-            populateMatrix(newShuffledArraya, currentCellClass);
-
-            $(currentCellClass).on('click', openCell);
-
-            $('.reset-button').on('click', load);
+            start();
+            $('.reset-button').on('click', start);
         }, 500)
 
     };
@@ -24,6 +18,17 @@ var game = (function () {
         script.src = 'http://code.jquery.com/jquery-1.11.0.min.js';
         script.type = 'text/javascript';
         document.getElementsByTagName('head')[0].appendChild(script);
+    }
+
+    function start() {
+
+        buildMatrix(4, 4);
+
+        let newShuffledArraya = shuffle(entryArray);
+        populateMatrix(newShuffledArraya, currentCellClass);
+
+        $(currentCellClass).on('click', openCell);
+
     }
 
     function buildMatrix(rows, cols, ) {
@@ -138,7 +143,6 @@ var game = (function () {
 
     function lookForMatching() {
         let openCells = $('.open');
-        console.log(openCells);
 
         if (openCells.length > 1) {
             // disable input for 2 seconds
@@ -149,14 +153,11 @@ var game = (function () {
                 let $firstCell = $(openCells[0]);
                 let $secondCell = $(openCells[1]);
 
-                console.log($firstCell.attr('data-value') + ' ' + $secondCell.attr('data-value'));
-
                 if ($firstCell.attr('data-value') != $secondCell.attr('data-value')) {
                     $(openCells).removeClass('open');
                     $(openCells).addClass('closed');
                     $(openCells).html('&nbsp');
                 } else {
-                    console.log('match');
                     $(openCells).addClass('matched')
                     $(openCells).removeClass('open');
                 }
