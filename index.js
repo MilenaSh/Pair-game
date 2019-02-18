@@ -122,6 +122,10 @@ var game = (function () {
 
     function openCell() {
         let $target = $(this);
+        if ($target.attr('disabled') === "disabled") {
+            return false;
+        }
+
         if ($($target).hasClass('closed')) {
             let value = ($target).attr('data-value');
             $target.html(value);
@@ -129,9 +133,7 @@ var game = (function () {
             $target.addClass('open');
         }
 
-        setTimeout(function () {
-            lookForMatching();
-        }, 2000);
+        lookForMatching();
     }
 
     function lookForMatching() {
@@ -139,29 +141,45 @@ var game = (function () {
         console.log(openCells);
 
         if (openCells.length > 1) {
+            // disable input for 2 seconds
+            preventInput();
+
             setTimeout(function () {
-                preventInput();
+
+                let $firstCell = $(openCells[0]);
+                let $secondCell = $(openCells[1]);
+
+                console.log($firstCell.attr('data-value') + ' ' + $secondCell.attr('data-value'));
+
+                if ($firstCell.attr('data-value') != $secondCell.attr('data-value')) {
+                    $(openCells).removeClass('open');
+                    $(openCells).addClass('closed');
+                    $(openCells).html('&nbsp');
+                } else {
+                    console.log('match');
+                    $(openCells).addClass('matched')
+                    $(openCells).removeClass('open');
+                }
+
+                if ($('.matched').length == entryArray.length * 2) {
+                    $('.message-box').html('');
+                    $('.message-box').html("Congrats! You have completed the game successfully!");
+                }
+                enableInput();
             }, 2000);
-            let $firstCell = $(openCells[0]);
-            let $secondCell = $(openCells[1]);
-
-            console.log($firstCell.attr('data-value') + ' ' + $secondCell.attr('data-value'));
-
-            if ($firstCell.attr('data-value') != $secondCell.attr('data-value')) {
-                $(openCells).removeClass('open');
-                $(openCells).addClass('closed');
-                $(openCells).html('&nbsp');
-            } else {
-                console.log('match');
-                $(openCells).addClass('matched')
-                $(openCells).removeClass('open');
-            }
-
-            if ($('.matched').length == entryArray.length * 2) {
-                $('.message-box').html('');
-                $('.message-box').html("Congrats! You have completed the game successfully!");
-            }
         }
+    }
+
+    function preventInput() {
+        let $cells = $('.cell');
+
+        $cells.attr('disabled', true);
+    }
+
+    function enableInput() {
+        let $cells = $('.cell');
+
+        $cells.attr('disabled', false);
     }
 
     return {
