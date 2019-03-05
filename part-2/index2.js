@@ -2,7 +2,8 @@
 
 var game = (function () {
     let entryArray = ["1", "2", "3", "4", "5", "6", "7", "8"];
-    let currentCellClass = '.cell';
+    let currentCellClass = '.cell';  
+    let matrixDictionary = {};
 
     function load() {
 
@@ -19,47 +20,29 @@ var game = (function () {
         buildMatrix(4, 4);
 
         let newShuffledArraya = shuffle(entryArray);
-        populateMatrix(newShuffledArraya, currentCellClass);
+        populateMatrix(newShuffledArraya, matrixDictionary);
 
         $(currentCellClass).on('click', openCell);
 
     }
 
     function buildMatrix(rows, cols, ) {
-
         for (let i = 0; i < rows; i += 1) {
 
-
             for (let j = 0; j < cols; j += 1) {
-
+                matrixDictionary[row[i]-col[j]] = {
+                    value: "",
+                    symbol: '*',
+                    state: 'closed'
+                }
             }
 
         }
-        $('<div/>', {
-                class: 'btn btn-danger reset-button',
-            }).html('Reset game')
-            .css('width', '200px')
-            .css('margin-top', '20px')
-            .css('border', '2px solid black')
-            .css('font-size', '30px')
-            .css('text-align', 'center')
-            .css('line-height', '100px')
-            .css('cursor', 'pointer')
-            .appendTo('.game-wrapper');
-
-        $('<div/>', {
-                class: 'message-box',
-            }).html('')
-            .css('width', '400px')
-            .css('margin-top', '20px')
-            .css('font-size', '25px')
-            .css('text-align', 'center')
-            .appendTo('.game-wrapper');
     }
 
 
 
-    function populateMatrix(array, cellClass) {
+    function populateMatrix(array, matrixDictionary) {
         for (let i = 0; i < array.length; i += 1) {
             $($(cellClass)[i]).attr('data-value', array[i]);
         }
