@@ -14,15 +14,15 @@ var game = (function () {
 
     };
 
+    function restart() {
+        start();
+    }
 
     function start() {
 
         buildMatrix(matRows, matCols);
         printMatrix(matrixDictionary);
-        console.log(matrixDictionary);
-
-
-        $(currentCellClass).on('click', openCell);
+        // console.log(matrixDictionary);
 
     }
 
@@ -49,12 +49,18 @@ var game = (function () {
         for (let i = 0; i < matRows; i += 1) {
             let currentRow = '';
             for (let j = 0; j < matCols; j += 1) {
-                currentRow += matrix[`row${i}-col${j}`].symbol + ' ';
+                let matrixCell = matrix[`row${i}-col${j}`];
+                if (matrixCell.state == 'closed') {
+                    currentRow += matrixCell.symbol + ' ';
+                } else if (matrixCell.state == 'opened' || matrixCell.state == 'matched') {
+                    currentRow += matrixCell.value + ' ';
+                }
             }
             console.log(currentRow);
             console.log(' ');
 
         }
+        console.log('/********************************************/');
     }
 
     function shuffle(array) {
@@ -88,66 +94,45 @@ var game = (function () {
         return resultArray
     }
 
-    function openCell() {
-        let $target = $(this);
-        if ($target.attr('disabled') === "disabled") {
-            return false;
-        }
-
-        if ($($target).hasClass('closed')) {
-            let value = ($target).attr('data-value');
-            $target.html(value);
-            $target.removeClass('closed');
-            $target.addClass('open');
-        }
-
-        lookForMatching();
-    }
-
-    function lookForMatching() {
-        let openCells = $('.open');
-
-        if (openCells.length > 1) {
-            // disable input for 2 seconds
-            preventInput();
-
+    function play(row, col) {
+        let selectedCell = matrixDictionary[`row${row}-col${col}`];
+        selectedCell.state = 'opened';
+        printMatrix(matrixDictionary);
+        let lookForMatch = lookForMatching(row, col);
+        if (!lookForMatch) {
             setTimeout(function () {
-
-                let $firstCell = $(openCells[0]);
-                let $secondCell = $(openCells[1]);
-
-                if ($firstCell.attr('data-value') != $secondCell.attr('data-value')) {
-                    $(openCells).removeClass('open');
-                    $(openCells).addClass('closed');
-                    $(openCells).html('&nbsp');
-                } else {
-                    $(openCells).addClass('matched')
-                    $(openCells).removeClass('open');
-                }
-
-                if ($('.matched').length == entryArray.length * 2) {
-                    $('.message-box').html('');
-                    $('.message-box').html("Congrats! You have completed the game successfully!");
-                }
-                enableInput();
-            }, 2000);
+                printMatrix(matrixDictionary);
+            }, 2000)
         }
     }
 
-    function preventInput() {
-        let $cells = $('.cell');
-
-        $cells.attr('disabled', true);
-    }
-
-    function enableInput() {
-        let $cells = $('.cell');
-
-        $cells.attr('disabled', false);
+    function lookForMatching(row, col) {
+        let flag = false;
+        let currentOpened = matrixDictionary[`row${row}-col${col}`];
+        for (let key in matrixDictionary) {
+            if (key != `row${row}-col${col}`) {
+                let cell = matrixDictionary[key];
+                if (cell.state == 'opened' && +cell.value == +currentOpened.value) {
+                    console.log(+cell.value === +currentOpened.value);
+                    cell.state = 'matched';
+                    currentOpened.state = 'matched';
+                    flag = true;
+                } else if (cell.state == 'opened' && +cell.value != +currentOpened.value) {
+                    cell.state = 'closed';
+                    currentOpened.state = 'closed';
+                    flag = false;
+                }
+            } else {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
     return {
-        load: load
+        load: load,
+        restart: restart,
+        play: play
     }
 
 })();
