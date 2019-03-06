@@ -2,49 +2,58 @@
 
 var game = (function () {
     let entryArray = ["1", "2", "3", "4", "5", "6", "7", "8"];
-    let currentCellClass = '.cell';  
     let matrixDictionary = {};
+    let matRows = 4;
+    let matCols = 4;
 
     function load() {
 
-        setTimeout(function () {
-            start();
-            $('.reset-button').on('click', start);
-        }, 500)
+        start();
+        //reset function - call start
+
 
     };
 
 
     function start() {
 
-        buildMatrix(4, 4);
+        buildMatrix(matRows, matCols);
+        printMatrix(matrixDictionary);
+        console.log(matrixDictionary);
 
-        let newShuffledArraya = shuffle(entryArray);
-        populateMatrix(newShuffledArraya, matrixDictionary);
 
         $(currentCellClass).on('click', openCell);
 
     }
 
     function buildMatrix(rows, cols, ) {
+        let newShuffledArraya = shuffle(entryArray);
+        let z = 0;
         for (let i = 0; i < rows; i += 1) {
 
             for (let j = 0; j < cols; j += 1) {
-                matrixDictionary[row[i]-col[j]] = {
-                    value: "",
+                matrixDictionary['row' + [i] + '-col' + [j]] = {
+                    value: newShuffledArraya[z],
                     symbol: '*',
-                    state: 'closed'
+                    state: 'closed',
+                    row: i,
+                    col: j
                 }
+                z += 1;
             }
 
         }
     }
 
+    function printMatrix(matrix) {
+        for (let i = 0; i < matRows; i += 1) {
+            let currentRow = '';
+            for (let j = 0; j < matCols; j += 1) {
+                currentRow += matrix[`row${i}-col${j}`].symbol + ' ';
+            }
+            console.log(currentRow);
+            console.log(' ');
 
-
-    function populateMatrix(array, matrixDictionary) {
-        for (let i = 0; i < array.length; i += 1) {
-            $($(cellClass)[i]).attr('data-value', array[i]);
         }
     }
 
