@@ -9,9 +9,6 @@ var game = (function () {
     function load() {
 
         start();
-        //reset function - call start
-
-
     };
 
     function restart() {
@@ -22,8 +19,6 @@ var game = (function () {
 
         buildMatrix(matRows, matCols);
         printMatrix(matrixDictionary);
-        // console.log(matrixDictionary);
-
     }
 
     function buildMatrix(rows, cols, ) {
@@ -99,10 +94,17 @@ var game = (function () {
         selectedCell.state = 'opened';
         printMatrix(matrixDictionary);
         let lookForMatch = lookForMatching(row, col);
-        if (!lookForMatch) {
+        console.log(lookForMatch);
+        if (lookForMatch) {
             setTimeout(function () {
                 printMatrix(matrixDictionary);
             }, 2000)
+        }
+
+        let checkResult = checkForGameEnd();
+
+        if (checkResult == true) {
+            console.log('Congrats you have lon!');
         }
     }
 
@@ -113,20 +115,26 @@ var game = (function () {
             if (key != `row${row}-col${col}`) {
                 let cell = matrixDictionary[key];
                 if (cell.state == 'opened' && +cell.value == +currentOpened.value) {
-                    console.log(+cell.value === +currentOpened.value);
                     cell.state = 'matched';
                     currentOpened.state = 'matched';
-                    flag = true;
                 } else if (cell.state == 'opened' && +cell.value != +currentOpened.value) {
                     cell.state = 'closed';
                     currentOpened.state = 'closed';
-                    flag = false;
+                    flag = true;
                 }
-            } else {
-                flag = true;
             }
         }
         return flag;
+    }
+
+    function checkForGameEnd() {
+        let flagEnd = true;
+        for (let key in matrixDictionary) {
+            if (matrixDictionary[key].state == 'closed') {
+                flagEnd = false;
+            }
+        }
+        return flagEnd;
     }
 
     return {
@@ -136,3 +144,10 @@ var game = (function () {
     }
 
 })();
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     function play(row, col) {
+//         game.play(row, col);
+//     }
+//     return {play:play
+// })
