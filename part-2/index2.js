@@ -91,20 +91,19 @@ var game = (function () {
 
     function play(row, col) {
         let selectedCell = matrixDictionary[`row${row}-col${col}`];
-        selectedCell.state = 'opened';
-        printMatrix(matrixDictionary);
-        let lookForMatch = lookForMatching(row, col);
-        console.log(lookForMatch);
-        if (lookForMatch) {
-            setTimeout(function () {
+        if (selectedCell) {
+            selectedCell.state = 'opened';
+            printMatrix(matrixDictionary);
+            let lookForMatch = lookForMatching(row, col);
+            if (lookForMatch) {
                 printMatrix(matrixDictionary);
-            }, 2000)
-        }
+            }
 
-        let checkResult = checkForGameEnd();
+            let checkResult = checkForGameEnd();
 
-        if (checkResult == true) {
-            console.log('Congrats you have lon!');
+            if (checkResult == true) {
+                console.log('Congrats you have lon!');
+            }
         }
     }
 
@@ -145,9 +144,12 @@ var game = (function () {
 
 })();
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     function play(row, col) {
-//         game.play(row, col);
-//     }
-//     return {play:play
-// })
+//document.addEventListener("DOMContentLoaded", play);
+
+function play(row, col) {
+    game.play(row, col);
+}
+
+function restart() {
+    game.restart();
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="game-wrapper"></div>
+    <canvas id="game"></canvas>
+
+    <script type="text/javascript" src="./index.js"></script>
+    <script type="text/javascript">
+        (function() {
+            game.load();
+        })();
+    </script>
+</body>
+
+</html>
+
+<!--
+    1. Create game field (4x4 boxes)
+        - create 8 objects and hide them twice under boxes
+    2. Game logic:
+        - on click reveal the object behind box
+            - if 2 boxes are open:
+                - if boxes match: mark them as completed
+                - if boxes don't match: wait 2 seconds and hide the boxes
+                    - restrict user input
+        - on all boxes matched: win message and option for new game
+        - user should be able to restart the game at any point
+    3. Restrictions: 
+        - index.html can't be edited
+
+---------------------------------------------------
+    1. On opening the page: Create game field (4x4 boxes) should be printed in the console ( any visualization is accepted )
+        - example:  x x x x
+                    x x x x
+                    x x x x
+                    x x x x
+        - create 8 objects and hide them twice under boxes
+    2. Game logic:
+        - user should have access to 'play' function in console requiring 2 parameters (row, column). User input should be restricted (only valid call should be accepted)
+            - print the updated field in the console
+            - if 2 boxes are open and does not match, print the field with them closed
+        - on all boxes matched: win message and option for new game
+        - user should be able to restart the game at any point calling 'restart()'
+    3. Restrictions: 
+        - index.html can't be edited
+        - The html on the page during running should not be changed in any way apart from loading scripts/styles via code.
+------------------------------------------------------
+
+big bonus:
+same thing in canvas
+-->
